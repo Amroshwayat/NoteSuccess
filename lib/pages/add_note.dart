@@ -18,7 +18,18 @@ class _AddNoteState extends State<AddNote> {
   Widget build(BuildContext context) {
     
     return Scaffold(
-      appBar: AppBar(title: Text("Add Note")),
+      appBar: AppBar(title: Text("Add Note"),actions: [IconButton(onPressed: ()async{
+
+   int ins=  await  sd.insertData('''INSERT INTO Notes (Title,DES)
+            VALUES ("${title.text}","${descreption.text}")      ''');
+           if(ins>0){
+        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (cont){
+      return HomePage();
+        }), (route) => false);
+           }
+
+
+      }, icon: Icon(Icons.save_outlined))],),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: ListView(children: [
@@ -38,21 +49,7 @@ class _AddNoteState extends State<AddNote> {
            maxLines: 5,
       
           ),
-           SizedBox(height: 20,),
-          Center(
-            child: InkWell(
-              borderRadius: BorderRadius.circular(50),onTap: ()async{
-              
-                    int ins=  await  sd.insertData('''INSERT INTO Notes (Title,DES)
-            VALUES ("${title.text}","${descreption.text}")      ''');
-           if(ins>0){
-        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (cont){
-      return HomePage();
-        }), (route) => false);
-           }
-              
-            },child: Container(color: Color.fromARGB(255, 79, 79, 79),height: 50,width: 100,child: Center(child: Text("Add")))),
-          )
+           
         ]),
       ),
 
